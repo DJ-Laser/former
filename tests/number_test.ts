@@ -1,5 +1,5 @@
 import { assertEquals } from "@std/assert";
-import { Selector } from "../src/mod.ts";
+import { Selector } from "../src/selector.ts";
 
 Deno.test(function defaultTest() {
   const selector = new Selector(["a", "b", "c"]).number();
@@ -35,7 +35,16 @@ Deno.test(function zeroSpacingTest() {
   assertEquals(selector.items, ["001. a", "051. b", "101. c"]);
 });
 
-Deno.test(function defaultCheckTest() {
-  const selector = new Selector(["a", "b", "c"]).number({ step: -1 });
-  assertEquals(selector.items, [" 1. a", " 0. b", "-1. c"]);
+Deno.test(function numberCheckTest() {
+  const selector = new Selector(["a", "b", "c"]).number();
+  const index = selector.check("2");
+
+  assertEquals(index, 1);
+  assertEquals(selector.items[index!], "2. b");
+});
+
+Deno.test(function numberDisplayFalseTest() {
+  const _selector = new Selector([{}, {}, {}]).number({
+    display: false,
+  });
 });
