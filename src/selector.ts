@@ -106,6 +106,18 @@ export class Selector<Item> {
   }
 
   /**
+   *
+   * @param this The `Selector<Item extends string>`
+   */
+  public checkCaseInsensitive(
+    this: Item extends string ? Selector<Item> : never
+  ): Selector<Item> {
+    return this.checkWith(
+      (input, item) => input.trim().toLowerCase() == item.trim().toLowerCase()
+    );
+  }
+
+  /**
    * Apply numbers to this `Selector`
    * Will prefix the numbers if `options.display = true` (only works on string items)
    * Will apply a check function based on the numbers if `options.check = true`
